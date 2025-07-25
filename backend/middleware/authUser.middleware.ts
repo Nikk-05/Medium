@@ -15,11 +15,9 @@ const generateToken = async (userId: string, email: string, secretKey: string) =
 const verifyToken = async (token: string, secretKey: string) => {
   try {
     const user = await verify(token, secretKey)
-    console.log(user)
     return user;
   }
   catch(error) {
-    console.log(error)
     return null;
   }
 }

@@ -53,7 +53,7 @@ const createBlog = async (c: Context) => {
         return c.json({
             message: "Unable to create Post",
             status: 'error'
-        }, 401)
+        }, 403)
     }
 }
 
