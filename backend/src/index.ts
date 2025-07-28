@@ -4,13 +4,19 @@ import { Context, Next } from 'hono'
 import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
-const app = new Hono()
+type Env = {
+  DATABASE_URL: string;
+  SECRET_KEY: string;
+};
+
+const app = new Hono<{ Bindings: Env }>();
 
 app.use('*', cors())
 
 
 import routes from '../routes/blog.routes'
 import { verifyToken } from '../middleware/authUser.middleware'
+ 
 
 app.use('*', async (c: Context, next: Next) => {
     try {
@@ -25,12 +31,12 @@ app.use('*', async (c: Context, next: Next) => {
         await next()
     }
     catch (error) {
+        console.error('Error connecting to the database:', error);
         return c.json({
             error: 'Unable to reach to database'
         }, 500)
     }
 })
-
 
 app.route('/api/v1', routes)
 
