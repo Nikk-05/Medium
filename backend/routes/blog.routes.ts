@@ -5,12 +5,11 @@ import { authUser } from '../middleware/authUser.middleware'
 
 const routes = new Hono()
 
-routes.get('/hello', (c) => {
-  console.log(c.env)
+routes.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
-routes.post('/signup', userSignUp);
+routes.post('/signup', userSignUp); 
 
 routes.post('/login', userLogin);
 
