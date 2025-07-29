@@ -15,7 +15,6 @@ app.use('*', cors())
 
 
 import routes from '../routes/blog.routes'
-import { verifyToken } from '../middleware/authUser.middleware'
  
 
 app.use('*', async (c: Context, next: Next) => {

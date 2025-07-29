@@ -1,4 +1,5 @@
 import { Context } from "hono"
+import { createBlogSchemaValidation, updateBlogSchemaValidation } from "@nikk_05/medium-global"
 
 const getAllBlogs = async (c: Context) => {
     try {
@@ -21,6 +22,13 @@ const updateBlog = async (c: Context) => {
     try {
         const postId = c.req.param('id')
         const { title, content, published } = await c.req.json()
+        const {success} = updateBlogSchemaValidation.safeParse({ title, content, published })
+        if (!success) {
+            return c.json({
+                message: "Invalid input data",
+                status: 'error',
+            }, 400)
+        }
         const prisma = c.get('prisma')
         const post = await prisma.post.update({
             where: { id: postId },
@@ -49,6 +57,13 @@ const createBlog = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
         const { title, content, published } = await c.req.json()
+        const { success } = createBlogSchemaValidation.safeParse({ title, content, published })
+        if (!success) {
+            return c.json({
+                message: "Invalid input data",
+                status: 'error',
+            }, 400)
+        }
         const userId = c.get('userId')
         await prisma.post.create({
             data: {

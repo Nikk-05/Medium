@@ -1,13 +1,21 @@
 import { Context } from 'hono'
 import { generateToken } from '../middleware/authUser.middleware'
 import bcrypt from 'bcryptjs'
+import { signUpSchemaValidation, loginSchemaValidation } from '@nikk_05/medium-global'
 
 
 const userSignUp = async (c: Context) => {
-    const prisma = c.get('prisma')
-    const { email, fullname, password } = await c.req.json()
-    const hashedPassword = await bcrypt.hash(password, 10);
     try {
+        const prisma = c.get('prisma')
+        const { email, fullname, password } = await c.req.json()
+        const { success } = signUpSchemaValidation.safeParse({ email, fullname, password })
+        if (!success) {
+            return c.json({
+                message: "Invalid input data",
+                status: 'error',
+            }, 400)
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
             data: {
                 email,
@@ -39,6 +47,13 @@ const userLogin = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
         const { email, password } = await c.req.json()
+        const { success } = loginSchemaValidation.safeParse({ email, password })
+        if (!success) {
+            return c.json({
+                message: "Invalid input data",
+                status: 'error',
+            }, 400)
+        }
         const user = await prisma.user.findUnique({
             where: {
                 email: email
