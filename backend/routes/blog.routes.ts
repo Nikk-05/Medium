@@ -5,9 +5,6 @@ import { authUser } from '../middleware/authUser.middleware'
 
 const routes = new Hono()
 
-routes.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
 
 routes.post('/signup', userSignUp); 
 

@@ -37,6 +37,6 @@ app.use('*', async (c: Context, next: Next) => {
     }
 })
 
-app.route('/api/v1/', routes)
+app.route('/api/v1', routes)
 
 export default app
