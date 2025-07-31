@@ -14,13 +14,13 @@ export const loginSchemaValidation = z.object({
 export const createBlogSchemaValidation = z.object({
     title: z.string().min(1).max(100),
     content: z.string().min(1).max(5000),
-    published: z.boolean().optional()
+    publishedDate: z.boolean().optional()
 })
 
 export const updateBlogSchemaValidation = z.object({
     title: z.string().min(1).max(100).optional(),
     content: z.string().min(1).max(5000).optional(),
-    published: z.boolean().optional()
+    publishedDate: z.boolean().optional()
 })
 
 export type signUpSchemaValidation = z.infer<typeof signUpSchemaValidation>

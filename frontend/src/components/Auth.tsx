@@ -1,55 +1,65 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import InputComponent from "./InputComponent";
 import ButtonComponent from "./ButtonComponent";
-import axios from "axios"
+import axios from "axios";
+import Heading from "./Heading";
+import { BACKEND_URL } from "../config";
+import { useNavigate } from "react-router-dom";
+import { loginSchemaValidation, signUpSchemaValidation } from "@nikk_05/medium-global";
+
 const Auth = ({ type }: { type: "signup" | "login" }) => {
+    const navigate = useNavigate();
+    const validateSchema = type === "signup" ? signUpSchemaValidation : loginSchemaValidation;
     const [postInputs, setPostInputs] = useState({
         email: "",
         fullname: "",
         password: ""
     });
 
+    const [loading, setLoading] = useState(false);
+
     const sendRequest = async () => {
-        const response = await axios.post(`https://medium-dev.nikhilworkprofile.workers.dev/api/v1/signup`, postInputs)
-        console.log(response.data);
-    }
+        try {
+            setLoading(true);
+            validateSchema.parse(postInputs);
+            const response = await axios.post(`${BACKEND_URL}/api/v1/${type === 'signup' ? 'signup' : 'login'}`, postInputs);
+            const token = response.data;
+            localStorage.setItem("access_token", token);
+            navigate("/blogs")
+        } catch (error) {
+            console.error("Request failed", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="h-screen flex justify-center items-center">
             <div className="flex flex-col items-center p-6 max-w-lg">
-                <div className="text-3xl font-extrabold">
-                    {type === "signup" ? "Create an account" : "Login to your account"}
-                </div>
-                <div className='text-slate-400 font-semibold mt-1'>
-                    {type === "signup" ? "Already have an account?" : "Don't have an account?"}
 
-                    {type === "signup" ? <Link className='underline pl-2' to={"/login"}>Login</Link> :
-                        <Link className='underline pl-2' to={"/signup"}>Signup</Link>
-                    }
-
-                </div>
+                <Heading {...(type === 'signup' ? { title: "Create an account", subheading: "Already have an account?", target: "/login", label: "Login" } :
+                    { title: "Login to your account", subheading: "Don't have an account?", target: "/signup", label: "Signup" })} />
 
                 <div className="flex flex-col items-center w-85">
                     <InputComponent label="Email or Username" type="email" placeholder="Enter your email"
-                        onChange={(e) =>
-                            setPostInputs({ ...postInputs, email: e.target.value })
-                        } />
+                        onChange={(e) => setPostInputs({ ...postInputs, email: e.target.value })} />
+
                     <InputComponent label="Name" type="text" placeholder="Enter your full name"
                         className={type === "signup" ? "" : "hidden"}
-                        onChange={(e) =>
-                            setPostInputs({ ...postInputs, fullname: e.target.value })
-                        } />
+                        onChange={(e) => setPostInputs({ ...postInputs, fullname: e.target.value })} />
+
                     <InputComponent label="Password" type="password" placeholder="Enter your password"
-                        onChange={(e) =>
-                            setPostInputs({ ...postInputs, password: e.target.value })
-                        } />
-                    <ButtonComponent label={type === "signup" ? "Sign Up" : "Log In"} onClick={sendRequest} />
+                        onChange={(e) => setPostInputs({ ...postInputs, password: e.target.value })} />
+
+                    <ButtonComponent
+                        label={loading ? "Loading..." : type === "signup" ? "Sign Up" : "Log In"}
+                        onClick={sendRequest}
+                        loader={loading} // disable button while loading
+                    />
                 </div>
             </div>
         </div>
-
-
-    )
-}
+    );
+};
 
 export default Auth;

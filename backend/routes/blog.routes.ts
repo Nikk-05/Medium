@@ -10,7 +10,7 @@ routes.post('/signup', userSignUp);
 
 routes.post('/login', userLogin);
 
-routes.get('/blog', authUser, getAllBlogs);
+routes.get('/blogs', authUser, getAllBlogs);
 
 routes.put('/blog/:id', authUser, updateBlog);
 

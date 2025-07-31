@@ -4,6 +4,10 @@ import { createBlogSchemaValidation, updateBlogSchemaValidation } from "@nikk_05
 const getAllBlogs = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
+        const user = await prisma.user.findOne({
+            where: { id: c.get('userId') }
+        })
+        const authorName = user.fullname
         const posts = await prisma.post.findMany()
         return c.json({
             data: posts,
@@ -13,7 +17,7 @@ const getAllBlogs = async (c: Context) => {
     }
     catch (error) {
         return c.json({
-            error: 'Uable to get posts'
+            error: 'Uable to get posts' + error
         }, 404)
     }
 }
@@ -21,8 +25,8 @@ const getAllBlogs = async (c: Context) => {
 const updateBlog = async (c: Context) => {
     try {
         const postId = c.req.param('id')
-        const { title, content, published } = await c.req.json()
-        const {success} = updateBlogSchemaValidation.safeParse({ title, content, published })
+        const { title, content, publishedDate } = await c.req.json()
+        const { success } = updateBlogSchemaValidation.safeParse({ title, content, publishedDate })
         if (!success) {
             return c.json({
                 message: "Invalid input data",
@@ -35,7 +39,7 @@ const updateBlog = async (c: Context) => {
             data: {
                 title,
                 content,
-                published
+                publishedDate
             }
         })
         return c.json({
@@ -56,8 +60,8 @@ const updateBlog = async (c: Context) => {
 const createBlog = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
-        const { title, content, published } = await c.req.json()
-        const { success } = createBlogSchemaValidation.safeParse({ title, content, published })
+        const { title, content, publishedDate } = await c.req.json()
+        const { success } = createBlogSchemaValidation.safeParse({ title, content, publishedDate })
         if (!success) {
             return c.json({
                 message: "Invalid input data",
@@ -69,7 +73,7 @@ const createBlog = async (c: Context) => {
             data: {
                 title,
                 content,
-                published,
+                publishedDate,
                 authorId: userId
             }
         })
@@ -80,7 +84,7 @@ const createBlog = async (c: Context) => {
     }
     catch (error) {
         return c.json({
-            message: "Unable to create Post",
+            message: "Unable to create Post" + error,
             status: 'error'
         }, 403)
     }

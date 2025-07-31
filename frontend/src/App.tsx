@@ -3,6 +3,8 @@ import IntroPage from './pages/IntroPage'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Blog from './pages/Blog'
+import Blogs from './pages/Blogs'
+
 
 
 const App = () => {
@@ -14,6 +16,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/blog" element={<Blog />} />
+           <Route path="/blogs" element={<Blogs />} />
         </Routes>
       </BrowserRouter>
     </>

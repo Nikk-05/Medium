@@ -36,7 +36,7 @@ const userSignUp = async (c: Context) => {
     catch (error) {
 
         return c.json({
-            message: "Error creating user",
+            message: "Error creating user" + error,
             status: 'error',
         }, 500)
     }
