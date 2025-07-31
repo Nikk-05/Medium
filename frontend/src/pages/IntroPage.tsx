@@ -1,5 +1,6 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar"
+import { Link } from "react-router-dom";
 
 const IntroPage = () => {
     return (
@@ -15,9 +16,9 @@ const IntroPage = () => {
                             A place to read, write, and deepen your understanding.
                         </p>
                         <div>
-                            <button className="bg-black text-white px-6 py-3 rounded-full cursor-pointer font-semibold text-lg">
+                            <Link className="bg-black text-white px-6 py-3 rounded-full cursor-pointer font-semibold text-lg" to = "/login">
                                 Start Reading
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
