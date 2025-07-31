@@ -5,7 +5,7 @@ import { authUser } from '../middleware/authUser.middleware'
 
 const routes = new Hono()
 
-routes.get('', (c) => {
+routes.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
