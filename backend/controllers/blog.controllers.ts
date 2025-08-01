@@ -4,13 +4,47 @@ import { createBlogSchemaValidation, updateBlogSchemaValidation } from "@nikk_05
 const getAllBlogs = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
-        const user = await prisma.user.findOne({
-            where: { id: c.get('userId') }
-        })
-        const authorName = user.fullname
-        const posts = await prisma.post.findMany()
+        
+        interface Author {
+            fullname: string;
+        }
+
+        interface Post {
+            id: string;
+            title: string;
+            content: string;
+            publishedDate: string;
+            author: Author;
+        }
+
+        interface Blog {
+            id: string;
+            title: string;
+            content: string;
+            publishedDate: string;
+            authorName: string;
+        }
+
+        const posts: Post[] = await prisma.post.findMany({
+            include: {
+                author: {
+                    select: {
+                        fullname: true
+                    }
+                }
+            }
+        });
+
+        const allBlogs: Blog[] = posts.map((post: Post): Blog => ({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            publishedDate: post.publishedDate,
+            authorName: post.author.fullname
+        }));
+
         return c.json({
-            data: posts,
+            data: allBlogs,
             message: 'Fetched all blogs successfully!',
             status: 'success',
         }, 200)
