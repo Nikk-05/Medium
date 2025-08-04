@@ -23,9 +23,9 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
             setLoading(true);
             validateSchema.parse(postInputs);
             const response = await axios.post(`${BACKEND_URL}/api/v1/${type === 'signup' ? 'signup' : 'login'}`, postInputs);
-            const token = response.data;
+            const token = response.data.access_token;
             localStorage.setItem("access_token", token);
-            navigate("/blogs")
+            navigate("/blogs",{state :response.data.data})
         } catch (error) {
             console.error("Request failed", error);
         } finally {
@@ -54,7 +54,7 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
                     <ButtonComponent
                         label={loading ? "Loading..." : type === "signup" ? "Sign Up" : "Log In"}
                         onClick={sendRequest}
-                        loader={loading} // disable button while loading
+                        loader={loading} 
                     />
                 </div>
             </div>

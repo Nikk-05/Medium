@@ -4,7 +4,7 @@ import { createBlogSchemaValidation, updateBlogSchemaValidation } from "@nikk_05
 const getAllBlogs = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
-        
+
         interface Author {
             fullname: string;
         }
@@ -55,6 +55,36 @@ const getAllBlogs = async (c: Context) => {
         }, 404)
     }
 }
+
+const getBlogById = async (c: Context) => {
+    try {
+        const postId = c.req.param('id')
+        const prisma = c.get('prisma')
+
+        const blog = await prisma.post.findUnique({
+            where: { id: postId },
+            include: {
+                author: {
+                    select: {
+                        fullname: true
+                    }
+                }
+            },
+        })
+        return c.json({
+            blog: blog,
+            message: "Blog fetched successfully!",
+            status: 'success'
+        }, 200)
+    }
+    catch (error) {
+        return c.json({
+            message: "Unable to get blog by ID" + error,
+            status: 'error'
+        }, 404)
+    }
+}
+
 
 const updateBlog = async (c: Context) => {
     try {
@@ -124,4 +154,4 @@ const createBlog = async (c: Context) => {
     }
 }
 
-export { getAllBlogs, updateBlog, createBlog }
+export { getAllBlogs, updateBlog, createBlog, getBlogById }

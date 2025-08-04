@@ -14,7 +14,7 @@ const useBlogs = () => {
                         Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                 });
-                setBlogs(response.data);
+                setBlogs(response.data.data);
             }
             catch (error) {
                 console.error("Error fetching blogs:", error);
@@ -23,7 +23,7 @@ const useBlogs = () => {
                 setLoading(false);
             }
         })();
-    })
+    },[])
 
     return {
         loading,
