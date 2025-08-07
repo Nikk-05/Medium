@@ -6,6 +6,8 @@ import Heading from "./Heading";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { loginSchemaValidation, signUpSchemaValidation } from "@nikk_05/medium-global";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../atoms/userStateAtom";
 
 const Auth = ({ type }: { type: "signup" | "login" }) => {
     const navigate = useNavigate();
@@ -15,6 +17,7 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
         fullname: "",
         password: ""
     });
+    const setUserName = useSetRecoilState(userState)
 
     const [loading, setLoading] = useState(false);
 
@@ -25,7 +28,8 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
             const response = await axios.post(`${BACKEND_URL}/api/v1/${type === 'signup' ? 'signup' : 'login'}`, postInputs);
             const token = response.data.access_token;
             localStorage.setItem("access_token", token);
-            navigate("/blogs",{state :response.data.data})
+            setUserName(response.data.username) //Store name in global state
+            navigate("/blogs")
         } catch (error) {
             console.error("Request failed", error);
         } finally {
@@ -54,7 +58,7 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
                     <ButtonComponent
                         label={loading ? "Loading..." : type === "signup" ? "Sign Up" : "Log In"}
                         onClick={sendRequest}
-                        loader={loading} 
+                        loader={loading}
                     />
                 </div>
             </div>

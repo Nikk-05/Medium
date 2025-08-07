@@ -61,7 +61,8 @@ const getBlogById = async (c: Context) => {
         const postId = c.req.param('id')
         const prisma = c.get('prisma')
 
-        const blog = await prisma.post.findUnique({
+
+        const data = await prisma.post.findUnique({
             where: { id: postId },
             include: {
                 author: {
@@ -71,6 +72,14 @@ const getBlogById = async (c: Context) => {
                 }
             },
         })
+        const blog = {
+            id: data.id,
+            title:data.title,
+            content:data.content,
+            publishedDate: data.publishedDate,
+            authorName: data.author.fullname
+        }
+        
         return c.json({
             blog: blog,
             message: "Blog fetched successfully!",
