@@ -6,14 +6,14 @@ type DrawerProps = {
 const Drawer = ({ isOpen }: DrawerProps) => {
 
     return (
-        <>
+        <div>
             <div
                 className={`fixed top-16 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform bg-gray-100 w-64 dark:bg-gray-800 
     ${isOpen ? "translate-x-0" : "translate-x-full"}`}
             >
 
                 <div className="py-4 flex flex-col ">
-                    <Link to="/blog" className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <Link to="/create" className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
                         Write
                     </Link>
                     <Link to="/logout" className="flex items-center p-2  mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -21,7 +21,7 @@ const Drawer = ({ isOpen }: DrawerProps) => {
                     </Link>
                 </div >
             </div >
-        </>
+        </div>
     );
 };
 

@@ -98,8 +98,8 @@ const getBlogById = async (c: Context) => {
 const updateBlog = async (c: Context) => {
     try {
         const postId = c.req.param('id')
-        const { title, content, publishedDate } = await c.req.json()
-        const { success } = updateBlogSchemaValidation.safeParse({ title, content, publishedDate })
+        const { title, content } = await c.req.json()
+        const { success } = updateBlogSchemaValidation.safeParse({ title, content })
         if (!success) {
             return c.json({
                 message: "Invalid input data",
@@ -112,7 +112,6 @@ const updateBlog = async (c: Context) => {
             data: {
                 title,
                 content,
-                publishedDate
             }
         })
         return c.json({
@@ -133,7 +132,12 @@ const updateBlog = async (c: Context) => {
 const createBlog = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
-        const { title, content, publishedDate } = await c.req.json()
+        const { title, content} = await c.req.json()
+        const publishedDate = new Date().toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        }).replace(/ /g, ' ');
         const { success } = createBlogSchemaValidation.safeParse({ title, content, publishedDate })
         if (!success) {
             return c.json({
