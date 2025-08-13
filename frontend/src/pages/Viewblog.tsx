@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import BlogContent from '../components/BlogContent';
 import AuthorInfo from '../components/AuthorInfo';
 import Appbar from '../components/Appbar';
+import Loader from '../components/Loader';
 
 type BlogSchema = {
   id: string;
@@ -34,19 +35,26 @@ const Viewblog = () => {
   };
 
   useEffect(() => {
+    // Scroll to top when component mounts or ID changes
+    window.scrollTo(0, 0);
+    
     if (!blog || blog.id !== id) {
       fetchBlogById();
     }
   }, [id]);
 
   if (!id) return <div>Invalid Blog ID</div>;
-  if (!blog) return <div>Loading...</div>;
+  if (!blog) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <Loader />
+    </div>
+  )
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Appbar />
-      <div className="flex justify-center items-center">
-        <div className="flex flex-row h-screen px-10 max-w-6xl">
+      <div className="flex justify-center">
+        <div className="flex flex-row px-10 max-w-6xl py-8">
           <BlogContent {...blog} />
           <AuthorInfo {...blog} />
         </div>

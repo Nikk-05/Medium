@@ -1,7 +1,7 @@
 import BlogCard from "../components/BlogCard";
 import Appbar from "../components/Appbar";
 import { useBlogs } from "../hooks/useBlogs";
-import Loader from "../components/Loader";
+import Skelton from "../components/Skelton";
 
 type Blog = {
     id: string;
@@ -19,11 +19,11 @@ const Blogs = () => {
             <div className="w-full h-full flex flex-col items-center p-2">
                 {loading ? (
                     <>
-                        <Loader />
-                        <Loader />
-                        <Loader />
-                        <Loader />
-                        <Loader />
+                        <Skelton />
+                        <Skelton />
+                        <Skelton />
+                        <Skelton />
+                        <Skelton />
                     </>
                 ) : (
                     blogs?.map((blog, index) => (
