@@ -74,12 +74,12 @@ const getBlogById = async (c: Context) => {
         })
         const blog = {
             id: data.id,
-            title:data.title,
-            content:data.content,
+            title: data.title,
+            content: data.content,
             publishedDate: data.publishedDate,
             authorName: data.author.fullname
         }
-        
+
         return c.json({
             blog: blog,
             message: "Blog fetched successfully!",
@@ -132,7 +132,7 @@ const updateBlog = async (c: Context) => {
 const createBlog = async (c: Context) => {
     try {
         const prisma = c.get('prisma')
-        const { title, content} = await c.req.json()
+        const { title, content } = await c.req.json()
         const publishedDate = new Date().toLocaleDateString('en-GB', {
             day: '2-digit',
             month: 'short',
@@ -167,4 +167,90 @@ const createBlog = async (c: Context) => {
     }
 }
 
-export { getAllBlogs, updateBlog, createBlog, getBlogById }
+const getUsersPost = async (c: Context) => {
+    try {
+        const prisma = c.get('prisma')
+        const userId = c.req.param('id')
+
+        interface Author {
+            fullname: string;
+        }
+
+        interface Post {
+            id: string;
+            title: string;
+            content: string;
+            publishedDate: string;
+            author: Author;
+        }
+
+        interface Blog {
+            id: string;
+            title: string;
+            content: string;
+            publishedDate: string;
+            authorName: string;
+            authorId: string;
+        }
+
+        const posts: Post[] = await prisma.post.findMany({
+            where: {
+                authorId: userId
+            },
+            include: {
+                author: {
+                    select: {
+                        fullname: true
+                    }
+                }
+            }
+        });
+
+        const myBlogs: Blog[] = posts.map((post: Post): Blog => ({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            publishedDate: post.publishedDate,
+            authorName: post.author.fullname,
+            authorId:userId
+        }));
+
+
+
+        return c.json({
+            data: myBlogs,
+            message: "User's blog fetched",
+            success: true
+        }, 200)
+    }
+    catch (error) {
+        c.json({
+            message: error,
+            success: false
+        }, 404)
+    }
+}
+
+const deletePost = async(c:Context) => {
+    try{
+        const prisma = c.get('prisma')
+        const blogId = c.req.param('id')
+        await prisma.post.delete({
+            where:{
+                id: blogId
+            }
+        })
+        return c.json({
+            message:"Post deleted successfully"
+        }, 200)
+    }
+    catch(error){
+        return c.json({
+            message: "Something went wrong",
+            success: false
+        }, 402)
+    }
+
+}
+
+export { getAllBlogs, updateBlog, createBlog, getBlogById, getUsersPost, deletePost }

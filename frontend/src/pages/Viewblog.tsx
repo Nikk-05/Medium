@@ -8,6 +8,8 @@ import BlogContent from '../components/BlogContent';
 import AuthorInfo from '../components/AuthorInfo';
 import Appbar from '../components/Appbar';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify'
+
 
 type BlogSchema = {
   id: string;
@@ -15,6 +17,7 @@ type BlogSchema = {
   content: string;
   publishedDate: string;
   authorName: string;
+  authorId:string
 };
 
 const Viewblog = () => {
@@ -30,14 +33,21 @@ const Viewblog = () => {
       });
       setBlog(response.data.blog);
     } catch (error) {
-      console.error('Error fetching blog:', error);
+      toast.error("Failed to fetch blog", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
   useEffect(() => {
     // Scroll to top when component mounts or ID changes
     window.scrollTo(0, 0);
-    
+
     if (!blog || blog.id !== id) {
       fetchBlogById();
     }

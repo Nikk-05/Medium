@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 type BlogCardProps = {
     id: string,
+    authorId: string,
     authorName: string,
     publishedDate: string,
     title: string,
@@ -11,7 +12,7 @@ type BlogCardProps = {
 
 const BlogCard = ({ id, authorName, publishedDate, title, content }: BlogCardProps) => {
     return (
-        <Link to={`/blog/${id}`} className="bg-white shadow-md rounded-lg p-2 mb-2 w-full md:w-1/2 cursor-pointer">
+        <Link to={`/blog/${id}`} className="cursor-pointer">
             <div>
                 <div className="flex flex-col m-2">
                     <div className="flex flex-row items-center">
@@ -25,7 +26,7 @@ const BlogCard = ({ id, authorName, publishedDate, title, content }: BlogCardPro
                     </div>
                     <div>
                         <h2 className="text-2xl font-bold mt-2">{title}</h2>
-                        <p className="text-gray-700 mt-1">{content.slice(0, 100) + "......."}</p>
+                        <p className="text-gray-700 mt-1 text-wrap">{content.slice(0, 100) + "......."}</p>
                         <span className="text-gray-700 text-sm mt-1 font-semibold">{`${Math.ceil(content.length / 50)} min read`}</span>
                     </div>
                 </div>

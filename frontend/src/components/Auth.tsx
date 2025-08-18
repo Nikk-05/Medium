@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { loginSchemaValidation, signUpSchemaValidation } from "@nikk_05/medium-global";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../atoms/userStateAtom";
+import { toast } from 'react-toastify'
 
 const Auth = ({ type }: { type: "signup" | "login" }) => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
         fullname: "",
         password: ""
     });
-    const setUserName = useSetRecoilState(userState)
+    const setUserData = useSetRecoilState(userState)
 
     const [loading, setLoading] = useState(false);
 
@@ -28,10 +29,21 @@ const Auth = ({ type }: { type: "signup" | "login" }) => {
             const response = await axios.post(`${BACKEND_URL}/api/v1/${type === 'signup' ? 'signup' : 'login'}`, postInputs);
             const token = response.data.access_token;
             localStorage.setItem("access_token", token);
-            setUserName(response.data.username) //Store name in global state
-            navigate("/blogs")
+            setUserData({
+                id: response.data.userId,
+                username: response.data.username
+            }); // Store userId and username in global state
+
+            navigate("/blogs") //navigate to all blogs
         } catch (error) {
-            console.error("Request failed", error);
+            toast.error("!" + error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }

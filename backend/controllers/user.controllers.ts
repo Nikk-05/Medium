@@ -28,6 +28,7 @@ const userSignUp = async (c: Context) => {
         const token = await generateToken(user.id, user.email, c.env.SECRET_KEY,) // Assuming a function to generate JWT token
 
         return c.json({
+            userId: user.id,
             username: user.fullname,
             message: `User with email ${user.email} created successfully!`,
             status: 'success',
@@ -68,6 +69,7 @@ const userLogin = async (c: Context) => {
 
         const token = await generateToken(user.id, user.email, c.env.SECRET_KEY)
         return c.json({
+            userId: user.id,
             username: user.fullname,
             message: 'User logged in successfully!',
             access_token: token,

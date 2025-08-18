@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
+import { userState } from "../atoms/userStateAtom";
+import { useRecoilValue } from "recoil";
 
 type DrawerProps = {
     isOpen: boolean;
 }
 const Drawer = ({ isOpen }: DrawerProps) => {
-
+    const userData = useRecoilValue(userState)
+    
     return (
         <div>
             <div
@@ -13,6 +16,9 @@ const Drawer = ({ isOpen }: DrawerProps) => {
             >
 
                 <div className="py-4 flex flex-col ">
+                    <Link to={`/userblogs/${userData?.id}`} className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        My Posts
+                    </Link>
                     <Link to="/create" className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
                         Write
                     </Link>

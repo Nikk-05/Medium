@@ -5,7 +5,8 @@ type blogSchema = {
     title: string,
     content: string,
     publishedDate: string,
-    authorName: string
+    authorName: string,
+    authorId:string
 };
 
 export const blogAtom = atom<blogSchema | undefined>({

@@ -5,7 +5,7 @@ import { userState } from "../atoms/userStateAtom";
 import { Link } from 'react-router-dom'
 
 const Appbar = () => {
-    const username = useRecoilValue(userState)
+    const userData = useRecoilValue(userState)
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -21,7 +21,7 @@ const Appbar = () => {
                     </div>
                     <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
                         <div className='w-10 h-10 border rounded-full bg-red-200 flex items-center justify-center mr-4'>
-                            <p className="text-black font-semibold text-2xl">{username.charAt(0).toUpperCase()}</p>
+                            <p className="text-black font-semibold text-2xl">{userData?.username.charAt(0).toUpperCase()}</p>
                         </div>
                     </div>
                 </div>
