@@ -16,13 +16,13 @@ const Drawer = ({ isOpen }: DrawerProps) => {
             >
 
                 <div className="py-4 flex flex-col ">
-                    <Link to={`/userblogs/${userData?.id}`} className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:text-white">
+                    <Link to={`/userblogs/${userData?.id}`} className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600">
                         My Posts
                     </Link>
-                    <Link to="/create" className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:text-white">
+                    <Link to="/create" className="flex items-center p-2 mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600">
                         Write
                     </Link>
-                    <Link to="/logout" className="flex items-center p-2  mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:text-white">
+                    <Link to="/logout" className="flex items-center p-2  mb-2 border-b-1 border-gray-400 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600">
                         Logout
                     </Link>
                 </div >
