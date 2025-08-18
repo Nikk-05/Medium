@@ -89,7 +89,7 @@ const Myblogs = () => {
     }
 
     return (
-        <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
+        <div className="bg-gray-100 min-h-screen">
             <Appbar />
             <div className="w-full h-full flex flex-col items-center p-2">
                 {loading ? (
@@ -111,7 +111,7 @@ const Myblogs = () => {
                                 <div className="absolute top-3 right-3 flex gap-2 z-10">
                                     <button
                                         onClick={() => handleDelete(blog.id)}
-                                        className="bg-white dark:bg-gray-800 text-gray-500 hover:text-red-500 p-2 rounded-full shadow transition"
+                                        className="bg-white text-gray-500 hover:text-red-500 p-2 rounded-full shadow transition"
                                     >
                                         {/* Trash icon */}
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -123,7 +123,7 @@ const Myblogs = () => {
 
                                     <button
                                         onClick={() => handleEdit(blog.id, blog.title, blog.content)}
-                                        className="bg-white dark:bg-gray-800 text-gray-500 hover:text-blue-500 p-2 rounded-full shadow transition"
+                                        className="bg-white text-gray-500 hover:text-blue-500 p-2 rounded-full shadow transition"
                                     >
                                         {/* Pen icon */}
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"

@@ -15,7 +15,7 @@ type Blog = {
 const Blogs = () => {
     const { loading, blogs } = useBlogs() as { loading: boolean; blogs: Blog[] };
     return (
-        <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
+        <div className="bg-gray-100 min-h-screen">
             <Appbar />
             <div className="w-full h-full flex flex-col items-center p-2">
                 {loading ? (
