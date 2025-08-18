@@ -19,7 +19,6 @@ const UpdatePost = () => {
     const updateHandler = async (): Promise<void> => {
         try {
             setLoading(true);
-            console.log(updateContent)
             validateSchema.parse({ title: updateTitle, content: updateContent });
             await axios.put(`${BACKEND_URL}/api/v1/blog/${location.state.id}`,
                 { title: updateTitle, content: updateContent },
@@ -40,7 +39,6 @@ const UpdatePost = () => {
             navigate('/blogs', { state: { refresh: true } })
         }
         catch (error: unknown) {
-            console.log(error);
             toast.error("Failed to publish blog. Please try again.", {
                 position: "top-right",
                 autoClose: 5000,

@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RecoilRoot } from 'recoil'
-import './index.css'
+// import './index.css'
 import 'react-toastify/dist/ReactToastify.css'
 import App from './App.tsx'
 

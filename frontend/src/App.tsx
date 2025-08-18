@@ -10,7 +10,6 @@ import Myblogs from './pages/Myblog'
 import { ToastContainer } from 'react-toastify'
 import UpdatePost from './pages/UpdatePost'
 
-
 const App = () => {
   return (
     <>
