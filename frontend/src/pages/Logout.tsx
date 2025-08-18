@@ -9,7 +9,7 @@ const Logout = () => {
 
     useEffect(() => {
         // Clear the user state
-        setUserState('');
+        setUserState(null);
         // Remove the access token
         localStorage.removeItem('access_token');
         // Redirect to the intro page
